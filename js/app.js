@@ -27,7 +27,6 @@
                 if($scope.newTask.trim()===''){
                     return;
                 }
-
                 //如何获取id?
                 //获取到数组最后一项的id,再加上1，就是当前的id
                 var id;
@@ -44,7 +43,7 @@
             };
 
             //3.删除一条任务
-            //根据当前数据的id,
+            //根据当前数据的id,将当前任务从列表中移除掉
             $scope.remove=function(id){
                 //console.log(id);
                 for(var i=0;i<$scope.taskList.length;i++){
@@ -55,6 +54,17 @@
                         break;
                     }
                 }
-            }
+            };
+
+            //
+            $scope.editId=0;
+            $scope.edit=function(id){
+                $scope.editId=id;
+            };
+            $scope.update=function(){
+                $scope.editId=0;
+            };
+
+            
 		}]);
 })(angular);
