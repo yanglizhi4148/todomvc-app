@@ -28,7 +28,8 @@
                     return;
                 }
 
-                //
+                //如何获取id?
+                //获取到数组最后一项的id,再加上1，就是当前的id
                 var id;
                 if($scope.taskList.length===0){
                     id=1;
@@ -40,6 +41,20 @@
 
                 //重置任务名称
                 $scope.newTask='';
+            };
+
+            //3.删除一条任务
+            //根据当前数据的id,
+            $scope.remove=function(id){
+                //console.log(id);
+                for(var i=0;i<$scope.taskList.length;i++){
+                    var task=$scope.taskList[i];
+                    if(task.id===id){
+                        //删除数据
+                        $scope.taskList.splice(i,1);
+                        break;
+                    }
+                }
             }
 		}]);
 })(angular);
