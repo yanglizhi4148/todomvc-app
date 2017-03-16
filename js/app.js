@@ -118,5 +118,22 @@
                 return count;
             };
 
+            //8.显示不同状态的任务
+            //过滤器，通过过滤数据，把符合条件的数据单独过滤出来
+            $scope.status=undefined;
+            $scope.changeAll=function(){
+                $scope.status=undefined;
+            };
+            $scope.changeActive=function(){
+                $scope.status=false;
+            };
+            $scope.changeCompleted=function(){
+                $scope.status=true;
+            };
+
+            //当前任务高亮处理(添加样式)
+            //通过ng-class
+
+
 		}]);
 })(angular);
