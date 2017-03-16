@@ -19,7 +19,7 @@
 	</header>
 	<!-- This section should be hidden by default and shown when there are todos -->
 	<section class="main">
-		<input class="toggle-all" type="checkbox">
+		<input class="toggle-all" type="checkbox" ng-model="selectAll" ng-click="checkAll()">
 		<label for="toggle-all">Mark all as complete</label>
 		<ul class="todo-list">
 			<!-- These are here just to show the structure of the list items -->
@@ -27,7 +27,7 @@
 			<!--双击哪一个任务，就给当前元素添加editing，也就是说双击会让editing的条件变为true-->
 			<li ng-class="{completed: task.isCompleted,editing:task.id===editId}" ng-repeat="task in taskList track by $index">
 				<div class="view">
-					<input class="toggle" type="checkbox" checked>
+					<input class="toggle" type="checkbox" ng-model="task.isCompleted">
 					<label ng-dblclick="edit(task.id)">{{task.name}}</label>
 					<button class="destroy" ng-click="remove(task.id)"></button>
 					<!--将id当作参数传递给remove方法，这样，在remove方法中就可以获取到id-->

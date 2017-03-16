@@ -65,6 +65,15 @@
                 $scope.editId=0;
             };
 
-            
+            //切换任务选中状态（单个或批量）
+            //单个任务状态是根据 双向数据绑定来实现的效果
+            //批量切换：根据当前全选按钮的状态来改变
+            $scope.selectAll=false;
+            $scope.checkAll=function(){
+                for(var i=0;i<$scope.taskList.length;i++){
+                    $scope.taskList[i].isCompleted=$scope.selectAll;
+                }
+            };
+            //第二种思路：$scope.$watch('selectAll',function(newValue){})
 		}]);
 })(angular);
