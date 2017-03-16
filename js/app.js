@@ -104,7 +104,19 @@
                     }
                 }
                 return flag;
-            }
-        
+            };
+        //显示未完成任务数
+            $scope.getUncompleted=function(){
+                //遍历所有的任务,如果当前任务是未完成就+1
+                var count=0;
+                $scope.taskList.forEach(function(task){
+                    //task表示数组中的每一项
+                    if(!task.isCompleted){
+                        count++;
+                    }
+                });
+                return count;
+            };
+
 		}]);
 })(angular);
