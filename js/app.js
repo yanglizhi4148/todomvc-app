@@ -75,5 +75,36 @@
                 }
             };
             //第二种思路：$scope.$watch('selectAll',function(newValue){})
+            //如果要想操作DOM，就通过指令完成，js代码中只有业务逻辑以及数据的处理
+            //其他的任务，都叫Angular框架完成
+
+            //6.清除已完成任务
+            //将已完成的任务删除（即：从任务列表中将数据删除）
+            //1.清除按钮的展示和隐藏
+            //2.单击清除按钮，将已完成任务清除
+            $scope.clear=function(){
+            //清空已完成的任务，反过来想就是把未完成的任务保留起来
+                var temp=[];
+                for(var i=0;i<$scope.taskList.length;i++){
+                    var task=$scope.taskList[i];
+                    if(!task.isCompleted){
+                        temp.push(task);
+                    }
+                }
+                $scope.taskList=temp;
+           };
+
+            //脏检查（dirty checking）
+            $scope.isShow=function(){
+                var flag=false;
+                for(var i=0;i<$scope.taskList.length;i++){
+                    if($scope.taskList[i].isCompleted){
+                        flag=true;
+                        break;
+                    }
+                }
+                return flag;
+            }
+        
 		}]);
 })(angular);

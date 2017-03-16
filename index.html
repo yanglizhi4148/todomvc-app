@@ -55,7 +55,9 @@
 			</li>
 		</ul>
 		<!-- Hidden if no completed items are left ↓ -->
-		<button class="clear-completed">Clear completed</button>
+		<!--只要有一个数据发生了变化，isShow()这个方法就会被重新调用执行，那么
+		这个方法的结果，也是会每次都重新获取-->
+		<button class="clear-completed" ng-click="clear()" ng-show="isShow()">Clear completed</button>
 	</footer>
 </section>
 <footer class="info">
