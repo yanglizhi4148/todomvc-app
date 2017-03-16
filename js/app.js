@@ -4,7 +4,7 @@
 	// Your starting point. Enjoy the ride!
 	angular
 		.module('todo',[])
-		.controller('TodoController',['$scope',function($scope){
+		.controller('TodoController',['$scope','$location',function($scope,$location){
 			//数据结构
             //task任务
 			$scope.taskList=[
@@ -120,19 +120,50 @@
 
             //8.显示不同状态的任务
             //过滤器，通过过滤数据，把符合条件的数据单独过滤出来
-            $scope.status=undefined;
-            $scope.changeAll=function(){
-                $scope.status=undefined;
-            };
-            $scope.changeActive=function(){
-                $scope.status=false;
-            };
-            $scope.changeCompleted=function(){
-                $scope.status=true;
-            };
+            //$scope.status=undefined;
+            //$scope.changeAll=function(){
+            //    $scope.status=undefined;
+            //};
+            //$scope.changeActive=function(){
+            //    $scope.status=false;
+            //};
+            //$scope.changeCompleted=function(){
+            //    $scope.status=true;
+            //};
 
             //当前任务高亮处理(添加样式)
-            //通过ng-class
+            //通过ng-class指令来决定要不要给当前元素添加selected类
+
+            //根据URL变化显示相应的任务
+            //思路：监视URL中hash值得变化
+            //$location.url();
+            //location
+            //angular中不允许使用全局变量，如果要使用全局变量，通过angular提供的服务获取到
+
+            //根据url中hash值的变化来展示不同状态任务的过程
+            //1.当页面被刷新的时候，控制器中的代码要重新执行一遍
+            //2.这样$watch中的代码就会执行一次，然后，在watch中通过newValue参数
+            //就可以获取到hash值
+            //3.根据获取到的hash值，就可以确定展示什么状态的任务了
+            // /===>                全部任务
+            // /active===>          未完成任务
+            // /completed===>       已完成任务
+            //4.根据不同的hash值，就能够设置hash中的值了，status配合过滤器不同
+            $scope.location=$location;
+            $scope.$watch('location.url()',function(newValue){
+                //console.log(newValue);
+                switch(newValue){
+                    case '/active':
+                        $scope.status=false;
+                        break;
+                    case '/completed':
+                        $scope.status=true;
+                        break;
+                    default :
+                        $scope.status=undefined;
+                        break;
+                }
+            });
 
 
 		}]);
