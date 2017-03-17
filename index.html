@@ -29,9 +29,9 @@
 			<li ng-class="{completed: task.isCompleted,editing:task.id===editId}"
 				ng-repeat="task in taskList | filter:{isCompleted:status} track by $index">
 				<div class="view">
-					<input class="toggle" type="checkbox" ng-model="task.isCompleted">
+					<input class="toggle" type="checkbox" ng-model="task.isCompleted" ng-click="saveData()">
 					<label ng-dblclick="edit(task.id)">{{task.name}}</label>
-					<button class="destroy" ng-click="remove(task.id)"></button>
+					<button class="destroy" ng-click="remove(task.id)" ></button>
 					<!--将id当作参数传递给remove方法，这样，在remove方法中就可以获取到id-->
 				</div>
 				<form ng-submit="update()">

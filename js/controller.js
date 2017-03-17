@@ -32,17 +32,9 @@
                 if($scope.newTask.trim()===''){
                     return;
                 }
-                //如何获取id?
-                //获取到数组最后一项的id,再加上1，就是当前的id
-                var id;
-                if($scope.taskList.length===0){
-                    id=1;
-                }else{
-                    var index=$scope.taskList.length-1;
-                    id=$scope.taskList[index].id+1;
-                }
-                $scope.taskList.push({id:id,name:$scope.newTask,isCompleted:false});
 
+				//调用添加数据的方法
+				DataService.add($scope.newTask);
                 //重置任务名称
                 $scope.newTask='';
             };
@@ -50,34 +42,30 @@
             //3.删除一条任务
             //根据当前数据的id,将当前任务从列表中移除掉
             $scope.remove=function(id){
-                //console.log(id);
-                for(var i=0;i<$scope.taskList.length;i++){
-                    var task=$scope.taskList[i];
-                    if(task.id===id){
-                        //删除数据
-                        $scope.taskList.splice(i,1);
-                        break;
-                    }
-                }
+                DataService.remove(id);
             };
 
-            //
+            //4.修改任务
             $scope.editId=0;
             $scope.edit=function(id){
                 $scope.editId=id;
             };
             $scope.update=function(){
                 $scope.editId=0;
+				//因为这个方法修改了任务数据，所以需要调用保存数据的方法，将数据存储起来
+				DataService.save();
             };
 
             //切换任务选中状态（单个或批量）
             //单个任务状态是根据 双向数据绑定来实现的效果
             //批量切换：根据当前全选按钮的状态来改变
+         	$scope.saveData=function(){
+				DataService.save();
+			};
+
             $scope.selectAll=false;
             $scope.checkAll=function(){
-                for(var i=0;i<$scope.taskList.length;i++){
-                    $scope.taskList[i].isCompleted=$scope.selectAll;
-                }
+                DataService.checkAll($scope.selectAll);
             };
             //第二种思路：$scope.$watch('selectAll',function(newValue){})
             //如果要想操作DOM，就通过指令完成，js代码中只有业务逻辑以及数据的处理
@@ -89,38 +77,18 @@
             //2.单击清除按钮，将已完成任务清除
             $scope.clear=function(){
                 //清空已完成的任务，反过来想就是把未完成的任务保留起来
-                var temp=[];
-                for(var i=0;i<$scope.taskList.length;i++){
-                    var task=$scope.taskList[i];
-                    if(!task.isCompleted){
-                        temp.push(task);
-                    }
-                }
-                $scope.taskList=temp;
+                DataService.clear();
+				//$scope.taskList=DataService.getData();
             };
 
             //脏检查（dirty checking）
             $scope.isShow=function(){
-                var flag=false;
-                for(var i=0;i<$scope.taskList.length;i++){
-                    if($scope.taskList[i].isCompleted){
-                        flag=true;
-                        break;
-                    }
-                }
-                return flag;
+                return DataService.isShow();
             };
             //显示未完成任务数
             $scope.getUncompleted=function(){
                 //遍历所有的任务,如果当前任务是未完成就+1
-                var count=0;
-                $scope.taskList.forEach(function(task){
-                    //task表示数组中的每一项
-                    if(!task.isCompleted){
-                        count++;
-                    }
-                });
-                return count;
+                return DataService.getUncompleted();
             };
 
             //8.显示不同状态的任务
