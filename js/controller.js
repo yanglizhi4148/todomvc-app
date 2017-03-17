@@ -61,13 +61,26 @@
             //批量切换：根据当前全选按钮的状态来改变
          	$scope.saveData=function(){
 				DataService.save();
+
+				//重新计算全选按钮要不要被选中
+				$scope.selectAll=DataService.isCheckAll();
 			};
 
-            $scope.selectAll=false;
+            //$scope.selectAll=false;
+            $scope.selectAll=DataService.isCheckAll();
             $scope.checkAll=function(){
                 DataService.checkAll($scope.selectAll);
             };
             //第二种思路：$scope.$watch('selectAll',function(newValue){})
+
+           	//全选按钮选中状态的保存
+			//1.修改任何一个单选按钮的选中状态都会影响全选按钮的选中状态
+			//2.页面刷新的时候，要决定是否选中全选按钮
+
+			//思路：判断所有任务按钮的选中状态，只要一个没选中的
+			//那么全选按钮就不被选中
+			//所有的任务都选中了，那么，全选按钮才被选中
+
             //如果要想操作DOM，就通过指令完成，js代码中只有业务逻辑以及数据的处理
             //其他的任务，都叫Angular框架完成
 

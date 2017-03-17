@@ -112,6 +112,28 @@
 				return count;
 			};
 
+			//判断全选按钮的选中状态
+			this.isCheckAll=function(){
+				var isChecked=true;
+				//taskList.forEach(function(task){
+				//	if(!task.isCompleted){
+				//		isChecked=false;
+				//	}
+				//});
+				taskList.every(function(task){
+					console.log(1);
+					//every方法要不要继续遍历是由当前回调函数的返回值决定的
+					//如果当前的返回值是true，那么久继续遍历
+					//如果当前的放绘制是false，那么久停止遍历
+					if(!task.isCompleted){
+						isChecked=false;
+						return false;
+					}
+					return true;
+				});
+				return isChecked;
+			};
+
 
         }]);
 })(angular);
