@@ -6,9 +6,22 @@
     //将所有与数据操作相关的代码放到服务模块中，然后，控制器如果要想操作
     //数据，只需要调用服务中提供的方法就可以了
     angular
-        .module('todo.controller',[])
-        .controller('TodoController',['$scope','$location',
-            'DataService', function($scope,$location,DataService){
+        .module('todo.controller',['ngRoute'])
+		.config(['$routeProvider',function($routeProvider){
+			//配置路由
+			//配置的路由需要匹配：
+			//     /
+			//     /active
+			//     /completed
+			$routeProvider.when('/:status?',{
+				//相对于index.html页面的路径，因为这个js文件最终是在index.html
+				//页面中执行的
+				templateUrl:'./view/todo.html',
+				controller:'TodoController'
+			})
+		}])
+        .controller('TodoController',['$scope','$routeParams',
+            'DataService', function($scope,$routeParams,DataService){
             //数据结构
             //task任务
             //$scope.taskList=[
@@ -98,7 +111,7 @@
             $scope.isShow=function(){
                 return DataService.isShow();
             };
-            //显示未完成任务数
+            //7.显示未完成任务数
             $scope.getUncompleted=function(){
                 //遍历所有的任务,如果当前任务是未完成就+1
                 return DataService.getUncompleted();
@@ -136,22 +149,33 @@
             // /completed===>       已完成任务
             //4.根据不同的hash值，就能够设置hash中的值了，status配合过滤器不同状态的任务
             //5.只要status值发生变化以后，页面中所有的指令和表达式
-            $scope.location=$location;
-            $scope.$watch('location.url()',function(newValue){
-                //console.log(newValue);
-                switch(newValue){
-                    case '/active':
-                        $scope.status=false;
-                        break;
-                    case '/completed':
-                        $scope.status=true;
-                        break;
-                    default :
-                        $scope.status=undefined;
-                        break;
-                }
-            });
+            //$scope.location=$location;
+            //$scope.$watch('location.url()',function(newValue){
+            //    //console.log(newValue);
+            //    switch(newValue){
+            //        case '/active':
+            //            $scope.status=false;
+            //            break;
+            //        case '/completed':
+            //            $scope.status=true;
+            //            break;
+            //        default :
+            //            $scope.status=undefined;
+            //            break;
+            //    }
+            //});
 
+			switch ($routeParams.status){
+				case 'active':
+					$scope.status=false;
+					break;
+				case 'completed':
+					$scope.status=true;
+					break;
+				default :
+					$scope.status=undefined;
+					break;
+			}
 
         }]);
 })(angular);

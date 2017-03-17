@@ -9,7 +9,7 @@
         .module('todo.service',[])
         .service('DataService',['$window',function($window){
             console.log('服务中的代码');
-            //$window也是
+            //$window也是一个内置的服务，用于实现全局对象window的作用
             //我们可以通过这个服务对象获取到localStorage
             //原因：因为angular不希望也不推荐我们直接操作全局对象
             //如果想要操作全局对象，也是通过angular中提供的服务来获取
@@ -62,6 +62,7 @@
 
 			//5.切换单个任务状态
 			//调用save方法即可
+			//批量切换任务的选中状态
 			this.checkAll=function(selectAll){
 				for(var i=0;i<taskList.length;i++){
 					taskList[i].isCompleted=selectAll;
@@ -81,7 +82,7 @@
 				//所以会出现引用的问题
 				//taskList=temp;
 				//这种方式没有改变taskList这个变量的引用指向，就说明$scope.taskList
-				//与taskList
+				//与taskList指向的还是同一个对象
 				//清空数组
 				taskList.length=0;
 				[].push.apply(taskList,temp);
@@ -99,7 +100,7 @@
 				return flag;
 			};
 
-			//7
+			//7.显示未完成任务
 			this.getUncompleted=function(){
 				//遍历所有的任务,如果当前任务是未完成就+1
 				var count=0;
@@ -121,7 +122,7 @@
 				//	}
 				//});
 				taskList.every(function(task){
-					console.log(1);
+					//console.log(1);
 					//every方法要不要继续遍历是由当前回调函数的返回值决定的
 					//如果当前的返回值是true，那么久继续遍历
 					//如果当前的放绘制是false，那么久停止遍历

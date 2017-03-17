@@ -10,57 +10,8 @@
 </head>
 
 <body ng-app="todo" ng-controller="TodoController">
-<section class="todoapp">
-	<header class="header">
-		<h1>todos</h1>
-		<form ng-submit="add()">
-			<input class="new-todo" placeholder="What needs to be done?" autofocus ng-model="newTask">
-		</form>
-	</header>
-	<!-- This section should be hidden by default and shown when there are todos -->
-	<section class="main">
-		<input class="toggle-all" type="checkbox" ng-model="selectAll" ng-click="checkAll()">
-		<label for="toggle-all">Mark all as complete</label>
-		<ul class="todo-list">
-			<!-- These are here just to show the structure of the list items -->
-			<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-			<!--双击哪一个任务，就给当前元素添加editing，也就是说双击会让editing的条件变为true-->
-			<!--要展示不同的任务状态，只需要处理filter过滤器中的isCompleted属性的值即可-->
-			<li ng-class="{completed: task.isCompleted,editing:task.id===editId}"
-				ng-repeat="task in taskList | filter:{isCompleted:status} track by $index">
-				<div class="view">
-					<input class="toggle" type="checkbox" ng-model="task.isCompleted" ng-click="saveData()">
-					<label ng-dblclick="edit(task.id)">{{task.name}}</label>
-					<button class="destroy" ng-click="remove(task.id)" ></button>
-					<!--将id当作参数传递给remove方法，这样，在remove方法中就可以获取到id-->
-				</div>
-				<form ng-submit="update()">
-					<input class="edit" ng-model="task.name">
-				</form>
-			</li>
-		</ul>
-	</section>
-	<!-- This footer should hidden by default and shown when there are todos -->
-	<footer class="footer">
-		<!-- This should be `0 items left` by default -->
-		<span class="todo-count"><strong ng-bind="getUncompleted()"></strong> item left</span>
-		<!-- Remove this if you don't implement routing -->
-		<ul class="filters">
-			<li>
-				<a ng-class="{selected:status===undefined}" href="#/">All</a>
-			</li>
-			<li>
-				<a ng-class="{selected:status===false}" href="#/active">Active</a>
-			</li>
-			<li>
-				<a ng-class="{selected:status===true}" href="#/completed">Completed</a>
-			</li>
-		</ul>
-		<!-- Hidden if no completed items are left ↓ -->
-		<!--只要有一个数据发生了变化，isShow()这个方法就会被重新调用执行，那么
-		这个方法的结果，也是会每次都重新获取-->
-		<button class="clear-completed" ng-click="clear()" ng-show="isShow()">Clear completed</button>
-	</footer>
+<section class="todoapp" ng-view>
+	<!--有路由规则展示视图内容-->
 </section>
 <footer class="info">
 	<p>Double-click to edit a todo</p>
@@ -69,6 +20,7 @@
 </footer>
 
 <script src="node_modules/angular/angular.js"></script>
+<script src='node_modules/angular-route/angular-route.js'></script>
 <script src="js/app.js"></script>
 <script src="js/controller.js"></script>
 <script src="js/dataService.js"></script>
